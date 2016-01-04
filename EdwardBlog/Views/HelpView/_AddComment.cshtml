@@ -1,0 +1,39 @@
+﻿@model EdwardBlog.Models.BlogComment
+@{var BlogId = (int)ViewData["key"]; }
+<div class="blog">
+    @using (Html.BeginForm())
+    { @Html.AntiForgeryToken()
+        <h4>Comment</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @*@Html.HiddenFor(model => model.Comment.BlogId, new { htmlAttributes = new { @Value = BlogId } })*@
+    @Html.HiddenFor(model => model.Comment.BlogId, new { Value = BlogId  })
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Comment.UserName, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.EditorFor(model => model.Comment.UserName, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Comment.UserName, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Comment.CommentDate, htmlAttributes: new { @class = "control-label" })
+        @Html.EditorFor(model => model.Comment.CommentDate, new { htmlAttributes = new { @class = "form-control datepicker" } })
+        @Html.ValidationMessageFor(model => model.Comment.CommentDate, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Comment.CommentContent, htmlAttributes: new { @class = "control-label" })
+        @Html.EditorFor(model => model.Comment.CommentContent, new { htmlAttributes = new { @class = "form-control", @style = "height:100px" } })
+        @Html.ValidationMessageFor(model => model.Comment.CommentContent, "", new { @class = "text-danger" })
+     </div>
+    <div style="text-align:center">
+        <div class="btn-group">
+            <button type="submit" class="btn btn-primary">Add Comment</button>
+            <button type="button" onclick="location.href='@Url.Action("Index", "Blogs")'" class="btn btn-primary">Back To List</button>
+        </div>
+    </div>
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,47 @@
+﻿body {
+    font-size:16px;
+}
+footer {
+    text-align:center
+}
+
+.navbar-default {
+    /*navbar background color*/
+    background-color:lavenderBlush; 
+    border-color: #E7E7E7;
+}
+
+.dropdown {
+    width:auto;
+}
+
+.dropdown-menu{
+   min-width:0px;
+}
+.dropdown-menu   li  a {
+    padding:3px 14.5px;    
+ }
+
+.clsDatePicker {
+    z-index: 100000;
+}
+
+.blog {
+    width:960px;
+    margin:0 auto;
+}
+
+.blog input {
+   max-width:960px;    
+    }
+.blog textarea {
+   max-width:960px;    
+    }
+
+.blogDetails label{
+    width:960px;
+
+}
+
+
+

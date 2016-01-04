@@ -1,0 +1,58 @@
+﻿@model   EdwardBlog.Models.BlogComment
+
+<div class="container blog blogDetails">
+    <div class="row">
+
+        <h2>New Comment</h2>
+        @using (Html.BeginForm())
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.Blog.Title)
+                @Html.Label(Model.Blog.Title, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Blog.ShortDescription)
+                @Html.Label(Model.Blog.ShortDescription, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Blog.Description)
+                <label class="form-control" style="height:auto">@Html.Raw(Model.Blog.Description)</label>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Blog.PostDate)
+                @Html.Label(Model.Blog.PostDate.ToShortDateString(), new { @class = "form-control" })
+            </div>
+            foreach (var item in Model.Blog.Comments)
+            {
+                @Html.Hidden(item.CommentId.ToString())
+
+                <div class="form-group">
+                    @Html.LabelFor(modelItem => item.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.Label(item.UserName)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(modelItem => item.CommentDate, htmlAttributes: new { @class = "control-label" })
+                    @Html.Label(item.CommentDate.ToShortDateString())
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(modelItem => item.CommentContent, htmlAttributes: new { @class = "control-label" })
+                    @Html.Label(item.CommentContent)
+                </div>
+            }
+        }
+        <hr />    
+    </div>
+</div>
+@Html.Partial("~/Views/HelpView/_AddComment.cshtml", new ViewDataDictionary { { "Key", Model.Blog.BlogId } });
+@section Scripts {
+<script type="text/javascript">
+                    $(function () { // will trigger when the document is ready
+                        $('.datepicker').datepicker("setDate", new Date()); //Initialise any date pickers
+                    });
+</script>
+    }
+
+
+
+

@@ -1,0 +1,89 @@
+﻿@model EdwardBlog.Models.Blog
+
+@{
+    ViewBag.Title = "New Blog";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="container blog">
+        <h2>New Blog</h2>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <label for="Title"> @Html.LabelFor(model => model.Title):</label>
+            @Html.TextBoxFor(model => model.Title, new { @class = "form-control", id = "Title", placeholder = "Enter Title" })
+            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            <label for="Content">@Html.LabelFor(model => model.ShortDescription)</label>
+            @Html.EditorFor(model => model.ShortDescription, new { htmlAttributes = new { @class = "form-control", id = "ShortDescription", placeholder = "Enter ShortDescription", @style = "height:100px" } })
+            @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            <label for="Content">@Html.LabelFor(model => model.Description)</label>
+            <script id="UEditor" name="content" type="text/plain">
+                Enter your Blog
+            </script>
+        </div>
+
+            <div class="form-group" style="visibility:hidden;display:none">
+                <label for="Content">@Html.LabelFor(model => model.Description)</label>
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", id = "Description", placeholder = "Enter Description" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+            @*<p>This is ckeditor</p>
+            <div class="form-group" style="visibility:hidden;display:none">
+                <label for="Content">@Html.LabelFor(model => model.Description)</label>
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", id = "editor", placeholder = "Enter Description" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>*@
+            <div class="form-group">
+                @Html.LabelFor(model => model.PostDate)
+                @Html.TextBoxFor(model => model.PostDate, new { @class = "form-control datepicker", placeholder = "Enter Post date here..." })
+                @Html.ValidationMessageFor(model => model.PostDate)
+            </div>
+            <div class="form-group">
+                @Html.EditorFor(model => model.VisibleFlag, new { @class = "form-control" }) <label>Visible To EveryOne</label>
+                @Html.ValidationMessageFor(model => model.VisibleFlag, "", new { @class = "text-danger" })
+            </div>
+            <div style="text-align:center">
+                <div class="btn-group">
+                    <button type="submit" id="editorSubmit" class="btn btn-primary">Publish</button>
+                    <button type="button" class="btn btn-primary">Save Back</button>
+                    <button type="button" onclick="location.href='@Url.Action("Index", "Blogs")'" class="btn btn-primary">Cancel</button>
+                </div>
+            </div>
+        </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+            <script type="text/javascript">
+                    $(function () { // will trigger when the document is ready
+                        $('.datepicker').datepicker("setDate", new Date()); //Initialise any date pickers
+                        //CKEDITOR.replace('editor');
+                        UE.getEditor('UEditor'); //initialise UEditor
+                    });
+                    //editor submit
+                    $('#editorSubmit').click(function () {
+                        //var editor_data = CKEDITOR.instances['editor'].getData();
+                        //$("#Description").val(editor_data);
+                        var ue = UE.getEditor('UEditor');
+                        //var ue = UE.getContent();
+                        //对编辑器的操作最好在编辑器ready之后再做
+                        ue.ready(function() {
+                            //设置编辑器的内容
+                            //ue.setContent('hello');
+                            //获取html内容，返回: <p>hello</p>
+                            var html = ue.getContent();
+                            $("#Description").val(html);
+                            //获取纯文本内容，返回: hello
+                            //var txt = ue.getContentTxt();
+                        });
+                    });
+                
+
+                </script>
+}

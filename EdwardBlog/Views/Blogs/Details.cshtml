@@ -1,0 +1,41 @@
+﻿@model EdwardBlog.Models.Blog
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container blog blogDetails">
+    <div class="row">
+
+        <h2>New Blog</h2>
+        @using (Html.BeginForm())
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.Title)
+                 @Html.Label(Model.Title, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.ShortDescription)
+                @Html.Label(Model.ShortDescription, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description)
+                <label class="form-control" style="height:auto">@Html.Raw(Model.Description)</label>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.PostDate)
+                @Html.Label(Model.PostDate.ToShortDateString(), new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                <label style="width:300px" >@Html.CheckBoxFor(model => model.VisibleFlag, new {disabled="disabled"})  Visible To EveryOne</label>
+            </div>
+            <div style="text-align:center">
+                <div class="btn-group">
+                    <button type="button" onclick="location.href='@Url.Action("Create", "Blogs")'" class="btn btn-primary">New Blog</button>
+                    <button type="button" onclick="location.href='@Url.Action("Edit", "Blogs", new { id = Model.BlogId })'" class="btn btn-primary">Edit</button>
+                    <button type="button" onclick="location.href='@Url.Action("Index", "Blogs")'" class="btn btn-primary">Back to List</button>
+
+                </div>
+            </div>
+        }
+    </div>
+</div>

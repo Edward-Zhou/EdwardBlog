@@ -1,0 +1,111 @@
+﻿@model EdwardBlog.Models.Blog
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container blog">
+    <div class="row">
+
+        <h2>Edit Blog</h2>
+        @using (Html.BeginForm("Edit","Blogs",FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model=>model.BlogId)
+            <div class="form-group">
+                <label for="Title"> @Html.LabelFor(model => model.Title):</label>
+                @Html.TextBoxFor(model => model.Title, new { @class = "form-control", id = "Title", placeholder = "Enter Title" })
+                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label for="Content">@Html.LabelFor(model => model.ShortDescription)</label>
+                @Html.EditorFor(model => model.ShortDescription, new { htmlAttributes = new { @class = "form-control", id = "ShortDescription", placeholder = "Enter ShortDescription", @style = "height:100px" } })
+                @Html.ValidationMessageFor(model => model.ShortDescription, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group" style="visibility:hidden;display:none">
+                <label for="Content">@Html.LabelFor(model => model.Description)</label>
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", id = "Description", placeholder = "Enter Description" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <label for="Content">@Html.LabelFor(model => model.Description)</label>
+                <script id="UEditor" name="content" type="text/plain">                    
+                </script>
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+            @*<p>This is CKEditor</p>
+            <div class="form-group">
+                <label for="Content">@Html.LabelFor(model => model.Description)</label>
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", id = "editor", placeholder = "Enter Description" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>*@
+            @*<div class="form-group">
+                    <label for="Image">Upload Image</label>
+                    <input class="form-control" id="Image" placeholder="Enter Image">
+                </div>
+                <div class="form-group">
+                    <label for="Tag">Tag</label>
+                    <input class="form-control" id="Tag" placeholder="Enter Tag">
+                </div>*@
+            <div class="form-group">
+                @Html.LabelFor(model => model.PostDate)
+                @Html.TextBoxFor(model => model.PostDate, new { @class = "form-control datepicker", placeholder = "Enter Post date here..." })
+                @Html.ValidationMessageFor(model => model.PostDate)
+
+            </div>
+
+            <div class="form-group">
+                @Html.CheckBoxFor(model => model.VisibleFlag)<label>Visible To EveryOne</label>
+            </div>
+            <div style="text-align:center">
+                <div class="btn-group">
+                    <button type="submit" id="editorSubmit" class="btn btn-primary">Save</button>
+                    <button type="button" onclick="location.href='@Url.Action("Details", "Blogs", new { id = Model.BlogId })'" class="btn btn-primary">Cancel</button>
+                    <button type="button" onclick="location.href='@Url.Action("Index", "Blogs")'" class="btn btn-primary">Back to List</button>
+
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+        $(function () { // will trigger when the document is ready
+            $('.datepicker').datepicker("setDate", new Date()); //Initialise any date pickers
+            //CKEDITOR.replace('editor');
+            UE.getEditor('UEditor'); //initialise UEditor
+        });
+       //editor submit
+        $(document).ready(function(){
+            var editor_data = $("#Description").val();
+            //CKEDITOR.instances['editor'].setData(editor_data);
+            var ue = UE.getEditor('UEditor');           
+            //对编辑器的操作最好在编辑器ready之后再做
+            ue.ready(function() {
+                //设置编辑器的内容
+                ue.setContent(editor_data);               
+            });
+        });
+        //editor submit
+        $('#editorSubmit').click(function () {
+            //var editor_data = CKEDITOR.instances['editor'].getData();
+            //$("#Description").val(editor_data);
+            var ue = UE.getEditor('UEditor');
+            //var ue = UE.getContent();
+            //对编辑器的操作最好在编辑器ready之后再做
+            ue.ready(function() {
+                //设置编辑器的内容
+                //ue.setContent('hello');
+                //获取html内容，返回: <p>hello</p>
+                var html = ue.getContent();
+                $("#Description").val(html);
+                //获取纯文本内容，返回: hello
+                //var txt = ue.getContentTxt();
+            });
+        });
+</script>
+}
